@@ -1,4 +1,4 @@
-﻿
+
 var china = [];
 
 function paintMap(R) {
@@ -8,6 +8,8 @@ function paintMap(R) {
         "stroke-width": 1,
         "stroke-linejoin": "round"
     };
+
+
 
     china.aomen = {
         name: "澳门",

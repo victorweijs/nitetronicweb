@@ -1,159 +1,35 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta charset="utf-8">
-<title>PHP+Mysql+jQuery实现地图区域数据统计-载入数据</title>
-
-<style type="text/css">
-.demo{width:760px; height:520px; margin:40px auto 0 auto; font-size:14px;}
-#map{width:600px; margin:10px auto}
-#label{width:200px; height:25px; line-height:25px; margin:10px auto}
-#label span{height:25px; width:25px; display:block; float:left; text-align:center}
-</style>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="raphael.js"></script>
-<script type="text/javascript" src="chinamapPath.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>PHP+Mysql+jQuery实现地图区域数据统计-载入数据</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1348.17">
+  <style type="text/css">
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 25.0px; font: 14.0px 'Songti SC'; color: #000000; -webkit-text-stroke: #000000}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 25.0px; font: 14.0px Times; color: #000000; -webkit-text-stroke: #000000; background-color: #005c86; min-height: 18.0px}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 25.0px; font: 14.0px Times; color: #000000; -webkit-text-stroke: #000000; background-color: #0084be; min-height: 18.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 25.0px; font: 14.0px Times; color: #000000; -webkit-text-stroke: #000000; background-color: #00a2e9; min-height: 18.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 25.0px; font: 14.0px Times; color: #000000; -webkit-text-stroke: #000000; background-color: #3fbeef; min-height: 18.0px}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 25.0px; font: 14.0px Times; color: #000000; -webkit-text-stroke: #000000; background-color: #97d6f5; min-height: 18.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; line-height: 25.0px; font: 14.0px Times; color: #000000; -webkit-text-stroke: #000000; background-color: #d7eef8; min-height: 18.0px}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 18.0px}
+    span.s1 {text-decoration: underline ; font-kerning: none}
+    span.s2 {font: 18.0px 'Songti SC'; text-decoration: underline ; font-kerning: none}
+    span.s3 {font-kerning: none}
+  </style>
 </head>
-
 <body>
-
-
-<div id="main">
-   <h2 class="top_title"><a href="#">PHP+Mysql+jQuery实现地图区域数据统计-载入数据</a></h2>
-   <div class="demo">
-   		<div id="label">
-        	<span>高</span>
-            <span style="background-color:#005c86"></span>
-            <span style="background-color:#0084be"></span>
-            <span style="background-color:#00a2e9"></span>
-            <span style="background-color:#3fbeef"></span>
-            <span style="background-color:#97d6f5"></span>
-            <span style="background-color:#d7eef8"></span>
-            <span>低</span>
-        </div>
-   		<div id="map"></div>
-   		
-   </div>
-	
-
-</div>
-
-<script type="text/javascript">
-$(function(){
-	$.get("json.php",function(json){
-	var data = string2Array(json);
-	
-	var flag;
-	var arr = new Array();
-	for(var i=0;i<data.length;i++){
-		var d = data[i];
-		if(d<100){
-			flag = 0;
-		}else if(d>=100 && d<500){
-			flag = 1;
-		}else if(d>=500 && d<2000){
-			flag = 2;
-		}else if(d>=2000 && d<5000){
-			flag = 3;
-		}else if(d>=5000 && d<10000){
-			flag = 4;
-		}else{
-			flag = 5;
-		}
-		arr.push(flag);
-	}
-	var colors = ["#d7eef8","#97d6f5","#3fbeef","#00a2e9","#0084be","#005c86"];
-    var R = Raphael("map", 600, 500);
-	
-	//调用绘制地图方法
-    paintMap(R);
-	
-	var textAttr = {
-        "fill": "#000",
-        "font-size": "12px",
-        "cursor": "pointer"
-    };
-			
-    var i=0;
-    for (var state in china) {
-		china[state]['path'].color = Raphael.getColor(0.9);
-        (function (st, state) {
-			
-			//获取当前图形的中心坐标
-            var xx = st.getBBox().x + (st.getBBox().width / 2);
-            var yy = st.getBBox().y + (st.getBBox().height / 2);
-			
-            //***修改部分地图文字偏移坐标
-            switch (china[state]['name']) {
-                case "江苏":
-                    xx += 5;
-                    yy -= 10;
-                    break;
-                case "河北":
-                    xx -= 10;
-                    yy += 20;
-                    break;
-                case "天津":
-                    xx += 10;
-                    yy += 10;
-                    break;
-                case "上海":
-                    xx += 10;
-                    break;
-                case "广东":
-                    yy -= 10;
-                    break;
-                case "澳门":
-                    yy += 10;
-                    break;
-                case "香港":
-                    xx += 20;
-                    yy += 5;
-                    break;
-                case "甘肃":
-                    xx -= 40;
-                    yy -= 30;
-                    break;
-                case "陕西":
-                    xx += 5;
-                    yy += 10;
-                    break;
-                case "内蒙古":
-                    xx -= 15;
-                    yy += 65;
-                    break;
-                default:
-            }
-			//写入文字
-			china[state]['text'] = R.text(xx, yy, china[state]['name']).attr(textAttr);
-			var fillcolor = colors[arr[i]];
-			
-			st.attr({fill:fillcolor});//填充背景色
-			
-			st[0].onmouseover = function () {
-                st.animate({fill: "#fdd", stroke: "#eee"}, 500);
-				china[state]['text'].toFront();
-                R.safari();
-            };
-            st[0].onmouseout = function () {
-                st.animate({fill: fillcolor, stroke: "#eee"}, 500);
-				china[state]['text'].toFront();
-                R.safari();
-            };
-					
-         })(china[state]['path'], state);
-		 i++;
-    }
-	});
-});
-
-function string2Array(string) { 
-	eval("var result = " + decodeURI(string)); 
-	return result; 
-}
-		
-
-</script>
-
+<h2 style="margin: 0.0px 0.0px 14.9px 0.0px; font: 18.0px Times; color: #0000ee; -webkit-text-stroke: #0000ee"><span class="s1"><b>PHP+Mysql+jQuery</b></span><span class="s2"><b>实现地图区域数据统计</b></span><span class="s1"><b>-</b></span><span class="s2"><b>载入数据</b></span></h2>
+<p class="p2"><span class="s3">高</span></p>
+<p class="p3"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3"></span><br></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p7"><span class="s3"></span><br></p>
+<p class="p8"><span class="s3"></span><br></p>
+<p class="p2"><span class="s3">低</span></p>
+<p class="p9"><span class="s3"></span><br></p>
 </body>
 </html>

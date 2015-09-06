@@ -10,3 +10,4 @@ while($row=mysql_fetch_array($query)){
 echo json_encode($arr);
 mysql_close($link);
 ?>
+
