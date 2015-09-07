@@ -114,7 +114,7 @@ if (!isset($config["languages"])) {
     <div id="mainmenu-toggle-overlay"></div>
     <input type="checkbox" id="mainmenu-toggle">
     <ul class="nav">
-      <li class="<?php echo $curr == "downloads" ? "active" : ""?>"><a href="/downloads">Downloads</a></li>
+      <li class="<?php echo $curr == "downloads" ? "active" : ""?>"><a href="/downloads">NitetronicTest</a></li>
       <li class="<?php echo $curr == "docs" ? "active" : ""?>"><a href="/docs.php">Documentation</a></li>
       <li class="<?php echo $curr == "community" ? "active" : ""?>"><a href="/get-involved" >Get Involved</a></li>
       <li class="<?php echo $curr == "help" ? "active" : ""?>"><a href="/support">Help</a></li>
